@@ -1,0 +1,21 @@
+# secrets
+.env
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# generated (force-add only on release/demo-freeze, see GIT_WORKFLOW.md section 8)
+data/index_dynamic/
+data/index_fixed/
+data/cache/
+data/documents.json
+
+# editors / OS
+.DS_Store
+.idea/
+.vscode/
+.ipynb_checkpoints/

@@ -1,0 +1,24 @@
+# Core
+pymupdf>=1.24
+numpy>=1.26
+sentence-transformers>=3.0   # pulls in torch (large download: install early)
+rank-bm25>=0.2.2
+pydantic>=2.5
+python-dotenv>=1.0
+
+# UI
+streamlit>=1.35
+
+# LLM clients (install the one you use; both are listed so check_setup works for either)
+anthropic>=0.40
+openai>=1.40
+
+# Tests
+pytest>=8.0
+
+# Dev only: regenerates the sample PDFs in data/pdfs/
+reportlab>=4.0
+
+# Optional (only if the API wrapper is built, see PLAN.md section 7)
+# fastapi>=0.110
+# uvicorn>=0.29

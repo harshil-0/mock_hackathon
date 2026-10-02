@@ -342,16 +342,21 @@ policy-assistant/
 │   └── streamlit_app.py         # UI incl. sources and debug panel                   [C]
 │
 ├── scripts/
+│   ├── bootstrap_git.sh         # PHASE 1: creates main, dev, and the 4 member branches [A]
+│   ├── check_setup.py           # PHASE 1: pre-flight (packages, key, PDFs, --embed, --ping) [A]
+│   ├── make_sample_pdfs.py      # PHASE 1: regenerates the sample corpus + answer key  [D]
 │   ├── inspect_chunks.py        # print chunks per doc: heading path, pages, tokens  [A]
 │   └── run_demo.sh              # one-command start, with pre-flight checks          [C]
 │
 ├── eval/
+│   ├── corpus_facts.md          # PHASE 1: answer key (facts, pages, question ideas)  [D]
 │   ├── questions_dev.json       # 16 questions for tuning                            [D]
 │   ├── questions_heldout.json   # 8 questions, scored only at the end                [D]
 │   ├── run_eval.py              # scores runs, writes results table                  [D]
 │   └── results.md               # latest scores + ablation table                     [D]
 │
 └── tests/
+    ├── test_contract.py         # PHASE 1: config, corpus, and stub-vs-schema checks  [A]
     ├── test_chunking.py         # sizes, heading paths, page ranges, no mid-list cuts [A]
     ├── test_retriever.py        # known query returns the expected chunk              [B]
     └── test_validator.py        # fake quote dropped, real quote kept                 [B]
@@ -512,3 +517,27 @@ Each member has **exactly one branch**, kept alive all day and merged into `dev`
 | `dev` | team | Integration. Every member branch merges here via PR |
 | `main` | team | Always demo-ready. Receives `dev` at 4:00 (tag `v0.1-e2e`) and the freeze at 7:30 (tag `demo-v1`) |
 | `release/demo-freeze` | A | Cut from `dev` at 7:30; the final demo code |
+
+---
+
+## 19. Phase 1 record (done)
+
+**Delivered:** repo skeleton, interface stubs matching section 7, `schemas.py`, a stub `answer_question()` that already returns the real response shape, 7 sample PDFs, an answer key, pre-flight and git bootstrap scripts, and contract tests.
+
+### Decisions locked in Phase 1
+| Decision | Choice | Notes |
+|---|---|---|
+| Python | 3.10+ | `check_setup.py` enforces it |
+| Embedding model | `sentence-transformers/all-MiniLM-L6-v2` | Small and fast. `BAAI/bge-small-en-v1.5` is the ablation candidate (it needs a query prefix, so only try it after the baseline works) |
+| LLM provider | `LLM_PROVIDER` env var: `anthropic` or `openai` | Default models are set in `config.py` and can be overridden with `LLM_MODEL` |
+| Index format | `chunks.jsonl` + `embeddings.npy` | As in section 6 |
+| Chunk ID | `<doc_stem>::p<page_start>::c<index>` | Stem = file name without `.pdf` |
+| Corpus | 7 fictional PDFs (Nimbus Works), 11 pages total | Real or organizer PDFs may be larger; test the chunker on them as soon as you have them |
+| Assumptions in section 1 | Proposed defaults accepted unless a teammate objects | Confirm with the team in the first 15 minutes |
+
+### Phase 1 exit checklist
+- [x] Repo skeleton and interface stubs committed
+- [x] Interfaces in section 7 expressed as code (`schemas.py`, function stubs) and tested (`tests/test_contract.py`)
+- [x] 5 to 10 PDFs in `data/pdfs/`, with a verified answer key (`eval/corpus_facts.md`)
+- [ ] Every teammate ran `python scripts/check_setup.py --embed --ping` successfully (**each person must do this on their own machine**)
+- [ ] Repo pushed and branch protection set (`bash scripts/bootstrap_git.sh <url>`, then GitHub settings)

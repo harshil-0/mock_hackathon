@@ -95,7 +95,7 @@ In hour 0 to 1, C helps D write PDFs. C sends the finished files to D (chat or s
 
 | Time | Event |
 |---|---|
-| 0:00 | A creates the GitHub repo and adds the other 3 as collaborators. A makes the **initial skeleton commit** on `main` (folders, `requirements.txt`, `.env.example`, `.gitignore`, `config.py`, `.github/pull_request_template.md`), then creates `dev` from it and sets branch protection |
+| 0:00 | A creates the GitHub repo and adds the other 3 as collaborators. `bash scripts/bootstrap_git.sh <repo-url>` then does the initial commit, `dev`, and all four member branches in one go. A makes the **initial skeleton commit** on `main` (folders, `requirements.txt`, `.env.example`, `.gitignore`, `config.py`, `.github/pull_request_template.md`), then creates `dev` from it and sets branch protection |
 | 0:00-0:30 | Everyone else reads `PLAN.md` and ticks the assumptions together |
 | 0:30 | Everyone clones and creates their own branch from `dev` (section 5). Nobody creates another branch after this |
 | 1:30 | D1 merged. A can test on real PDFs |
@@ -111,6 +111,8 @@ In hour 0 to 1, C helps D write PDFs. C sends the finished files to D (chat or s
 ## 5. Everyday commands
 
 ### Setup (each member, once, at 0:30)
+
+> If A ran `scripts/bootstrap_git.sh <url>`, the four member branches already exist on the remote. Skip the `git checkout -b` line and just run `git checkout <your-branch>`.
 
 ```bash
 git clone <repo-url>
